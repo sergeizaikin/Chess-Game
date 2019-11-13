@@ -13,12 +13,8 @@ namespace JogoXadrez
         {
             try
             {
-                Tabuleiro tab = new Tabuleiro(8, 8);
-
-                tab.ColocarPeca(new Torre(tab, Cor.Preta), new Posicao(0, 1));
-                tab.ColocarPeca(new Rei(tab, Cor.Branca), new Posicao(2, 4));
-
-                Tela.ImprimirTabuleiro(tab);
+                PartidaDeXadrez partida = new PartidaDeXadrez();
+                Tela.ImprimirTabuleiro(partida.Tab);
             }
             catch (TabuleiroException e)
             {
