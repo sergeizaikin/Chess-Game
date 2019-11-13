@@ -1,4 +1,5 @@
-﻿using JogoXadrez.TabuleiroNS;
+﻿using System;
+using JogoXadrez.TabuleiroNS;
 
 
 namespace JogoXadrez
@@ -11,8 +12,16 @@ namespace JogoXadrez
             {
                 for (int j = 0; j < tabuleiro.Colunas; j++)
                 {
-                    System.Console.WriteLine("-");
+                    if (tabuleiro.Peca(i,j) != null)
+                    {
+                        Console.Write(tabuleiro.Peca(i, j) + " ");
+                    }
+                    else
+                    {
+                        Console.Write("- ");
+                    }
                 }
+                Console.WriteLine();
             }
         }
     }
