@@ -1,5 +1,7 @@
 ﻿using System;
-using JogoXadrez.Tabuleiro;
+using JogoXadrez;
+using JogoXadrez.TabuleiroNS;
+
 
 namespace JogoXadrez
 {
@@ -7,9 +9,7 @@ namespace JogoXadrez
     {
         static void Main(string[] args)
         {
-            Posicao P = new Posicao(3, 4);
-            Console.WriteLine(P);
-
+            
         }
     }
 }

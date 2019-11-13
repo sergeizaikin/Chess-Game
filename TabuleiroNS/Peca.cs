@@ -1,4 +1,4 @@
-﻿namespace JogoXadrez.Tabuleiro
+﻿namespace JogoXadrez.TabuleiroNS
 {
     class Peca
     {
