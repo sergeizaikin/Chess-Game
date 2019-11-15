@@ -31,7 +31,7 @@ namespace JogoXadrez.TabuleiroNS
             if (ExistePeca(posicao))
                 throw new TabuleiroException("Já existe peça nessa posção!");
             Pecas[posicao.Linha, posicao.Coluna] = peca;
-            peca.Posicao = posicao;
+            peca.PosicaoPeca = posicao;
         }
 
         public Peca RetirarPeca(Posicao pos)
@@ -39,7 +39,7 @@ namespace JogoXadrez.TabuleiroNS
             if (Peca(pos) == null)
                 return null;
             Peca aux = Peca(pos);
-            aux.Posicao = null;
+            aux.PosicaoPeca = null;
             Pecas[pos.Linha, pos.Coluna] = null;
             return aux;
         }
@@ -52,7 +52,7 @@ namespace JogoXadrez.TabuleiroNS
 
         public bool PosicaoValida(Posicao pos)
         {
-            return pos.Linha <= Linhas && pos.Coluna <= Colunas && pos.Linha >= 0 && pos.Coluna >= 0;
+            return pos.Linha <= Linhas - 1 && pos.Coluna <= Colunas - 1 && pos.Linha >= 0 && pos.Coluna >= 0;
         }
 
         public void ValidarPosicao(Posicao pos)
