@@ -167,6 +167,21 @@ namespace JogoXadrez.Jogo
         public void RealizaJogada(Posicao origem, Posicao destino)
         {
             Peca pecaCapturada = ExecutaMovimento(origem, destino);
+            Peca p = Tab.Peca(destino);
+
+            // Jogada epsecial Promoção
+
+            if (p is Peao)
+            {
+                if ((p.Cor == Cor.Branca && destino.Linha == 0) || (p.Cor == Cor.Preta && destino.Linha == 7))
+                {
+                    p = Tab.RetirarPeca(destino);
+                    Pecas.Remove(p);
+                    Peca dama = new Dama(Tab, p.Cor);
+                    Tab.ColocarPeca(dama, destino);
+                }
+            }
+
             if (EstaEmXeque(JogadorAtual))
             {
                 DesfazerMovimento(origem, destino, pecaCapturada);
@@ -192,7 +207,6 @@ namespace JogoXadrez.Jogo
                 MudaJogador();
             }
 
-            Peca p = Tab.Peca(destino);
 
             // Jogada especial en passant
             if (p is Peao && destino.Linha == origem.Linha - 2 || destino.Linha == origem.Linha + 2)
