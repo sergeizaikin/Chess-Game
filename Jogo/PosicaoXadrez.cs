@@ -22,5 +22,7 @@ namespace JogoXadrez.Jogo
         {
             return "" + Coluna + Linha;
         }
+
+       
     }
 }
