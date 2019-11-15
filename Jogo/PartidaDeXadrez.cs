@@ -90,7 +90,7 @@ namespace JogoXadrez.Jogo
                 throw new TabuleiroException("Você não pode se colocar em xeque!");
             }
 
-            if (EstaEmXeque(Enemigo(JogadorAtual)))
+            if (EstaEmXeque(Inimigo(JogadorAtual)))
             {
                 Xeque = true;
             }
@@ -99,7 +99,7 @@ namespace JogoXadrez.Jogo
                 Xeque = false;
             }
 
-            if (TesteXequeMate(Enemigo(JogadorAtual)))
+            if (TesteXequeMate(Inimigo(JogadorAtual)))
             {
                 Terminada = true;
             }
@@ -162,7 +162,7 @@ namespace JogoXadrez.Jogo
 
         public void ValidarPosicaoDeDestino(Posicao origem, Posicao destino)
         {
-            if (!Tab.Peca(origem).PodeMoverPara(destino))
+            if (!Tab.Peca(origem).MovimentoPossivel(destino))
             {
                 throw new TabuleiroException("Posição de destino invalida!");
             }
@@ -182,21 +182,40 @@ namespace JogoXadrez.Jogo
         //Fazer funcionar
         private void ColocarPecas()
         {
-            ColocarNovaPeca(new Rei(Tab, Cor.Preta), 'a', 8);
-            ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'b', 8);
-            ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'b', 7);
-            ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'c', 8);
-            ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'a', 7);
-
-            ColocarNovaPeca(new Rei(Tab, Cor.Branca), 'd', 1);
             ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'a', 1);
-            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'b', 1);
-            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'c', 1);
-            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'e', 1);
-            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'd', 7);
-            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'd', 6);
-            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'd', 5);
-            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'd', 8);
+            ColocarNovaPeca(new Cavalo(Tab, Cor.Branca), 'b', 1);
+            ColocarNovaPeca(new Bispo(Tab, Cor.Branca), 'c', 1);
+            ColocarNovaPeca(new Dama(Tab, Cor.Branca), 'd', 1);
+            ColocarNovaPeca(new Rei(Tab, Cor.Branca), 'e', 1);
+            ColocarNovaPeca(new Bispo(Tab, Cor.Branca), 'f', 1);
+            ColocarNovaPeca(new Cavalo(Tab, Cor.Branca), 'g', 1);
+            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'h', 1);
+            ColocarNovaPeca(new Peao(Tab, Cor.Branca), 'a', 2);
+            ColocarNovaPeca(new Peao(Tab, Cor.Branca), 'b', 2);
+            ColocarNovaPeca(new Peao(Tab, Cor.Branca), 'c', 2);
+            ColocarNovaPeca(new Peao(Tab, Cor.Branca), 'd', 2);
+            ColocarNovaPeca(new Peao(Tab, Cor.Branca), 'e', 2);
+            ColocarNovaPeca(new Peao(Tab, Cor.Branca), 'f', 2);
+            ColocarNovaPeca(new Peao(Tab, Cor.Branca), 'g', 2);
+            ColocarNovaPeca(new Peao(Tab, Cor.Branca), 'h', 2);
+
+
+            ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'a', 8);
+            ColocarNovaPeca(new Cavalo(Tab, Cor.Preta), 'b', 8);
+            ColocarNovaPeca(new Bispo(Tab, Cor.Preta), 'c', 8);
+            ColocarNovaPeca(new Dama(Tab, Cor.Preta), 'd', 8);
+            ColocarNovaPeca(new Rei(Tab, Cor.Preta), 'e', 8);
+            ColocarNovaPeca(new Bispo(Tab, Cor.Preta), 'f', 8);
+            ColocarNovaPeca(new Cavalo(Tab, Cor.Preta), 'g', 8);
+            ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'h', 8);
+            ColocarNovaPeca(new Peao(Tab, Cor.Preta), 'a', 7);
+            ColocarNovaPeca(new Peao(Tab, Cor.Preta), 'b', 7);
+            ColocarNovaPeca(new Peao(Tab, Cor.Preta), 'c', 7);
+            ColocarNovaPeca(new Peao(Tab, Cor.Preta), 'd', 7);
+            ColocarNovaPeca(new Peao(Tab, Cor.Preta), 'e', 7);
+            ColocarNovaPeca(new Peao(Tab, Cor.Preta), 'f', 7);
+            ColocarNovaPeca(new Peao(Tab, Cor.Preta), 'g', 7);
+            ColocarNovaPeca(new Peao(Tab, Cor.Preta), 'h', 7);
         }
 
         public void ColocarNovaPeca(Peca peca, char coluna, int linha)
@@ -212,7 +231,7 @@ namespace JogoXadrez.Jogo
             if (R == null)
                 throw new TabuleiroException($"Não tem rei da cor {cor} no tabuleiro!");
 
-            foreach (Peca peca in GetPecasEmJogo(Enemigo(cor)))
+            foreach (Peca peca in GetPecasEmJogo(Inimigo(cor)))
             {
                 bool[,] mat = peca.MovimentosPossiveis();
                 if (mat[R.PosicaoPeca.Linha, R.PosicaoPeca.Coluna])
@@ -223,7 +242,7 @@ namespace JogoXadrez.Jogo
             return false;
         }
 
-        private Cor Enemigo(Cor cor)
+        private Cor Inimigo(Cor cor)
         {
             if (cor == Cor.Branca)
             {

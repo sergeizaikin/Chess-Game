@@ -94,11 +94,11 @@ namespace JogoXadrez
                     }
 
                     ImprimirPeca(tabuleiro.Peca(i, j));
+                    Console.BackgroundColor = fundoOrig;
                 }
                 Console.WriteLine();
             }
             Console.WriteLine("  A B C D E F G H");
-            Console.BackgroundColor = fundoOrig;
         }
 
         public static void ImprimirPeca(Peca peca)

@@ -42,9 +42,15 @@
             return false;
         }
 
-        public bool PodeMoverPara(Posicao posicaoDestino)
+        public bool MovimentoPossivel(Posicao posicaoDestino)
         {
             return MovimentosPossiveis()[posicaoDestino.Linha, posicaoDestino.Coluna];
+        }
+
+        protected bool PodeMover(Posicao posicao)
+        {
+            Peca p = Tab.Peca(posicao);
+            return p == null || p.Cor != Cor;
         }
 
         public abstract bool[,] MovimentosPossiveis();
