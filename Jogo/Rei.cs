@@ -65,7 +65,7 @@ namespace JogoXadrez.Jogo
             }
 
             //esq
-            posicao.DefinirValores(PosicaoPeca.Linha + 1, PosicaoPeca.Coluna);
+            posicao.DefinirValores(PosicaoPeca.Linha, PosicaoPeca.Coluna - 1);
             if (Tab.PosicaoValida(posicao) && PodeMover(posicao))
             {
                 mat[posicao.Linha, posicao.Coluna] = true;

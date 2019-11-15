@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 using JogoXadrez.TabuleiroNS;
+using JogoXadrez.Exceptions;
 
 namespace JogoXadrez.Jogo
 {
     class PartidaDeXadrez
     {
         public Tabuleiro Tab { get; private set; }
-        private int Turno;
-        private Cor jogadorAtual;
+        public int Turno { get; private set; }
+        public Cor jogadorAtual { get; private set; }
         public bool Terminada { get; private set; }
 
         public PartidaDeXadrez()
@@ -27,6 +28,51 @@ namespace JogoXadrez.Jogo
             p.IncrementarQtdDeMovimentos();
             Peca pecaCapturada = Tab.RetirarPeca(destino);
             Tab.ColocarPeca(p, destino);
+        }
+
+        public void RealizaJogada(Posicao origem, Posicao destino)
+        {
+            ExecutaMovimento(origem, destino);
+            Turno++;
+            MudaJogador();
+        }
+
+        public void ValidarPosicaoDeOrigem(Posicao posicaoOrigem)
+        {
+            if (Tab.Peca(posicaoOrigem) == null)
+            {
+                throw new TabuleiroException("Não existe peça na posição de origem escolhida!");
+            }
+
+            if (jogadorAtual != Tab.Peca(posicaoOrigem).Cor)
+            {
+                throw new TabuleiroException("A peça de origem escolhida não é sua!");
+            }
+
+            if (!Tab.Peca(posicaoOrigem).ExisteMovimentosPossiveis())
+            {
+                throw new TabuleiroException("Não há movimentos possíveis para a peça de origem escolhida!");
+            }
+        }
+
+        public void ValidarPosicaoDeDestino(Posicao origem, Posicao destino)
+        {
+            if (!Tab.Peca(origem).PodeMoverPara(destino))
+            {
+                throw new TabuleiroException("Posição de destino invalida!");
+            }
+        }
+
+        private void MudaJogador()
+        {
+            if (jogadorAtual == Cor.Branca)
+            {
+                jogadorAtual = Cor.Preta;
+            }
+            else
+            {
+                jogadorAtual = Cor.Branca;
+            }
         }
         //Fazer funcionar
         private void ColocarPecas()
