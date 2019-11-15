@@ -20,14 +20,11 @@ namespace JogoXadrez
                     try
                     {
                         Console.Clear();
-                        Tela.ImprimirTabuleiro(partida.Tab);
-                        Console.WriteLine();
-                        Console.WriteLine("Turno: " + partida.Turno);
-                        Console.WriteLine("Aguardando jogada: " + partida.jogadorAtual);
+                        Tela.ImprimirPartida(partida);
 
                         Console.WriteLine();
                         Console.Write("Origem: ");
-                        Posicao origem = Tela.LerPosicaoXadrez().toPosicao();
+                        Posicao origem = Tela.LerPosicaoXadrez().ToPosicao();
                         partida.ValidarPosicaoDeOrigem(origem);
                         bool[,] posicoesPossiveis = partida.Tab.Peca(origem).MovimentosPossiveis();
                         Console.Clear();
@@ -35,7 +32,7 @@ namespace JogoXadrez
 
                         Console.WriteLine();
                         Console.Write("Destino: ");
-                        Posicao destino = Tela.LerPosicaoXadrez().toPosicao();
+                        Posicao destino = Tela.LerPosicaoXadrez().ToPosicao();
                         partida.ValidarPosicaoDeDestino(origem, destino);
 
                         partida.RealizaJogada(origem, destino);
