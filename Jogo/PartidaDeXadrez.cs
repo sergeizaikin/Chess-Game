@@ -42,7 +42,7 @@ namespace JogoXadrez.Jogo
             return pecaCapturada;
         }
 
-        public HashSet<Peca> GetPecasCapturadas (Cor cor)
+        public HashSet<Peca> GetPecasCapturadas(Cor cor)
         {
             HashSet<Peca> aux = new HashSet<Peca>();
             foreach (var peca in PecasCapturadas)
@@ -99,8 +99,47 @@ namespace JogoXadrez.Jogo
                 Xeque = false;
             }
 
-            Turno++;
-            MudaJogador();
+            if (TesteXequeMate(Enemigo(JogadorAtual)))
+            {
+                Terminada = true;
+            }
+            else
+            {
+                Turno++;
+                MudaJogador();
+            }
+        }
+
+        public bool TesteXequeMate(Cor cor)
+        {
+            if (!EstaEmXeque(cor))
+            {
+                return false;
+            }
+
+            foreach (Peca peca in GetPecasEmJogo(cor))
+            {
+                bool[,] mat = peca.MovimentosPossiveis();
+                for (int i = 0; i < Tab.Linhas; i++)
+                {
+                    for (int j = 0; j < Tab.Colunas; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Posicao origem = peca.PosicaoPeca;
+                            Posicao destino = new Posicao(i, j);
+                            Peca pecaCapturada = ExecutaMovimento(origem, new Posicao(i, j));
+                            bool testeXeque = EstaEmXeque(cor);
+                            DesfazerMovimento(origem, destino, pecaCapturada);
+                            if (!testeXeque)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         public void ValidarPosicaoDeOrigem(Posicao posicaoOrigem)
@@ -143,19 +182,21 @@ namespace JogoXadrez.Jogo
         //Fazer funcionar
         private void ColocarPecas()
         {
-            ColocarNovaPeca(new Rei(Tab, Cor.Preta), 'd', 8);
-            ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'c', 7);
-            ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'd', 7);
-            ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'e', 7);
-            ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'e', 8);
+            ColocarNovaPeca(new Rei(Tab, Cor.Preta), 'a', 8);
+            ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'b', 8);
+            ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'b', 7);
             ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'c', 8);
+            ColocarNovaPeca(new Torre(Tab, Cor.Preta), 'a', 7);
 
-            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'c', 1);
-            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'c', 2);
-            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'd', 2);
-            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'e', 2);
-            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'e', 1);
             ColocarNovaPeca(new Rei(Tab, Cor.Branca), 'd', 1);
+            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'a', 1);
+            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'b', 1);
+            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'c', 1);
+            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'e', 1);
+            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'd', 7);
+            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'd', 6);
+            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'd', 5);
+            ColocarNovaPeca(new Torre(Tab, Cor.Branca), 'd', 8);
         }
 
         public void ColocarNovaPeca(Peca peca, char coluna, int linha)
@@ -174,7 +215,7 @@ namespace JogoXadrez.Jogo
             foreach (Peca peca in GetPecasEmJogo(Enemigo(cor)))
             {
                 bool[,] mat = peca.MovimentosPossiveis();
-                if(mat[R.PosicaoPeca.Linha, R.PosicaoPeca.Coluna])
+                if (mat[R.PosicaoPeca.Linha, R.PosicaoPeca.Coluna])
                 {
                     return true;
                 }
