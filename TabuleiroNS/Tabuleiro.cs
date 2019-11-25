@@ -23,7 +23,14 @@ namespace JogoXadrez.TabuleiroNS
 
         public Peca Peca(Posicao pos)
         {
-            return Pecas[pos.Linha, pos.Coluna];
+            try
+            {
+                return Pecas[pos.Linha, pos.Coluna];
+            }
+            catch (IndexOutOfRangeException)
+            {
+                throw new TabuleiroException("Posição inválida!");
+            }
         }
 
         public void ColocarPeca(Peca peca, Posicao posicao)

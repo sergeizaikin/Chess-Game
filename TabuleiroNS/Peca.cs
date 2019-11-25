@@ -1,4 +1,7 @@
-﻿namespace JogoXadrez.TabuleiroNS
+﻿using JogoXadrez.Exceptions;
+using System;
+
+namespace JogoXadrez.TabuleiroNS
 {
     abstract class Peca
     {
@@ -44,7 +47,14 @@
 
         public bool MovimentoPossivel(Posicao posicaoDestino)
         {
-            return MovimentosPossiveis()[posicaoDestino.Linha, posicaoDestino.Coluna];
+            try
+            {
+                return MovimentosPossiveis()[posicaoDestino.Linha, posicaoDestino.Coluna];
+            }
+            catch (IndexOutOfRangeException)
+            {
+                throw new TabuleiroException("Posição inválida!");
+            }
         }
 
         protected bool PodeMover(Posicao posicao)

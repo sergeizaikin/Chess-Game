@@ -2,6 +2,7 @@
 using JogoXadrez.TabuleiroNS;
 using JogoXadrez.Jogo;
 using System.Collections.Generic;
+using JogoXadrez.Exceptions;
 
 namespace JogoXadrez
 {
@@ -126,11 +127,23 @@ namespace JogoXadrez
 
         public static PosicaoXadrez LerPosicaoXadrez()
         {
-            string s = Console.ReadLine();
-            char coluna = s[0];
-            int linha = int.Parse(s[1] + "");
+            try
+            {
+                string s = Console.ReadLine();
+                char coluna = s[0];
+                int linha = int.Parse(s[1] + "");
+                return new PosicaoXadrez(coluna, linha);
 
-            return new PosicaoXadrez(coluna, linha);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                throw new TabuleiroException("Posição inválida!");
+            }
+            catch (FormatException)
+            {
+                throw new TabuleiroException("Coordinatos incorretos");
+            }
+
         }
     }
 }
