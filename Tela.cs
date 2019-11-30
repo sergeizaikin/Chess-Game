@@ -8,9 +8,18 @@ namespace JogoXadrez
 {
     class Tela
     {
-        public static void ImprimirPartida(PartidaDeXadrez partida)
+        public static void ImprimirPartida(PartidaDeXadrez partida, Posicao origem = null)
         {
-            ImprimirTabuleiro(partida.Tab);
+            Console.Clear();
+            if (origem != null)
+            {
+                var movPossiveis = partida.Tab.Peca(origem).MovimentosPossiveis();
+                ImprimirTabuleiro(partida.Tab, movPossiveis);
+            }
+            else
+            {
+                ImprimirTabuleiro(partida.Tab);
+            }
             Console.WriteLine();
             ImprimirPecasCapturadas(partida);
             Console.WriteLine();
@@ -54,6 +63,10 @@ namespace JogoXadrez
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan;
                 }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                }
                 Console.Write(peca + " ");
                 Console.ResetColor();
             }
@@ -72,7 +85,7 @@ namespace JogoXadrez
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("  A B C D E F G H");
+            Console.WriteLine("  a b c d e f g h");
         }
 
         public static void ImprimirTabuleiro(Tabuleiro tabuleiro, bool[,] posicoesPossiveis)
@@ -99,7 +112,7 @@ namespace JogoXadrez
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("  A B C D E F G H");
+            Console.WriteLine("  a b c d e f g h");
         }
 
         public static void ImprimirPeca(Peca peca)
@@ -114,7 +127,9 @@ namespace JogoXadrez
             {
                 if (peca.Cor == Cor.Branca)
                 {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.Write(peca);
+                    Console.ResetColor();
                 }
                 else
                 {
@@ -125,14 +140,27 @@ namespace JogoXadrez
             }
         }
 
-        public static PosicaoXadrez LerPosicaoXadrez()
+        public static PosicaoXadrez LerPosicaoXadrez(bool isOrigem, PosicaoXadrez origem = null)
         {
             try
             {
-                string s = Console.ReadLine();
-                char coluna = s[0];
-                int linha = int.Parse(s[1] + "");
-                return new PosicaoXadrez(coluna, linha);
+                if (isOrigem)
+                {
+                    Console.Write("Origem: ");
+                    string s = Console.ReadLine();
+                    char coluna = s[0];
+                    int linha = int.Parse(s[1] + "");
+                    return new PosicaoXadrez(coluna, linha);
+                }
+                else
+                {
+                    Console.WriteLine($"Origem: {origem}");
+                    Console.Write("Destino: ");
+                    string s = Console.ReadLine();
+                    char coluna = s[0];
+                    int linha = int.Parse(s[1] + "");
+                    return new PosicaoXadrez(coluna, linha);
+                }
 
             }
             catch (IndexOutOfRangeException)

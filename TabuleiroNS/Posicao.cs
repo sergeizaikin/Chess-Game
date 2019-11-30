@@ -1,4 +1,6 @@
-﻿namespace JogoXadrez.TabuleiroNS
+﻿using JogoXadrez.Jogo;
+
+namespace JogoXadrez.TabuleiroNS
 {
     class Posicao
     {
@@ -9,6 +11,11 @@
         {
             Linha = linha;
             Coluna = coluna;
+        }
+
+        public PosicaoXadrez ToPosicaoXadrez()
+        {
+            return new PosicaoXadrez((char)('a' + Coluna), 8 - Linha);
         }
 
         public override string ToString()

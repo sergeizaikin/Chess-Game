@@ -22,17 +22,11 @@ namespace JogoXadrez
                         Console.Clear();
                         Tela.ImprimirPartida(partida);
 
-                        Console.WriteLine();
-                        Console.Write("Origem: ");
-                        Posicao origem = Tela.LerPosicaoXadrez().ToPosicao();
+                        Posicao origem = Tela.LerPosicaoXadrez(true).ToPosicao();
                         partida.ValidarPosicaoDeOrigem(origem);
-                        bool[,] posicoesPossiveis = partida.Tab.Peca(origem).MovimentosPossiveis();
-                        Console.Clear();
-                        Tela.ImprimirTabuleiro(partida.Tab, posicoesPossiveis);
+                        Tela.ImprimirPartida(partida, origem);
 
-                        Console.WriteLine();
-                        Console.Write("Destino: ");
-                        Posicao destino = Tela.LerPosicaoXadrez().ToPosicao();
+                        Posicao destino = Tela.LerPosicaoXadrez(false, origem.ToPosicaoXadrez()).ToPosicao();
                         partida.ValidarPosicaoDeDestino(origem, destino);
 
                         partida.RealizaJogada(origem, destino);
